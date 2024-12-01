@@ -182,8 +182,11 @@
                 const audioPlayer = document.getElementById('audio-player');
                 const audioTitle = document.getElementById('audio-title');
 
+                // Get the title for the current number
                 const numericNumber = parseInt(currentNumber, 10);
+                console.log("Current number:", numericNumber); // Debugging
                 const title = titles[language] && titles[language][numericNumber];
+                console.log("Retrieved title:", title); // Debugging
 
                 if (title) {
                     audioTitle.textContent = title;
@@ -192,6 +195,7 @@
                     audioTitle.textContent = `Audio Number: ${currentNumber}`;
                 }
 
+                // Play the audio file
                 audioPlayer.src = audioUrl;
                 audioPlayer.style.display = 'block';
                 audioPlayer.play();
