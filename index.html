@@ -189,7 +189,10 @@
                 console.log("Retrieved title:", title); // Debugging
 
                 if (title) {
+                    console.log("Before update:", audioTitle.textContent); // Debugging
                     audioTitle.textContent = title;
+                    audioTitle.style.display = 'block'; // Ensure the title is visible
+                    console.log("After update:", audioTitle.textContent); // Debugging
                 } else {
                     console.error(`Title for number ${currentNumber} in language ${language} not found in titles.json`);
                     audioTitle.textContent = `Audio Number: ${currentNumber}`;
