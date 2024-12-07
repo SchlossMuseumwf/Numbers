@@ -59,6 +59,19 @@
         .back-button:hover {
             background-color: #CC0000;
         }
+        .play-button {
+            font-size: 20px;
+            width: 60px;
+            height: 60px;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+        .play-button:hover {
+            background-color: #218838;
+        }
         .link-container {
             display: flex;
             justify-content: center;
@@ -66,25 +79,19 @@
             gap: 15px;
             margin-top: 20px;
         }
-        .play-button, .back-link {
-            padding: 8px 16px;
+        .back-link {
             font-size: 16px;
-            background-color: #28a745;
-            color: white;
-            text-decoration: none;
+            padding: 8px 16px;
+            border: none;
             border-radius: 5px;
+            background-color: #ffc107;
+            color: black;
+            text-decoration: none;
             cursor: pointer;
             height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        .play-button:hover {
-            background-color: #218838;
-        }
-        .back-link {
-            background-color: #ffc107;
-            color: black;
         }
         .back-link:hover {
             background-color: #e0a800;
@@ -120,10 +127,10 @@
             <button class="button" onclick="addNumber(9)">9</button>
             <button class="button" onclick="addNumber(0)">0</button>
             <button class="button back-button" onclick="removeLast()">←</button>
+            <button id="play-button" class="play-button" onclick="playAudio()">▶</button>
         </div>
         <div class="link-container">
             <a id="back-link" href="https://schlossmuseumwf.github.io/willkommen/" class="back-link">Back to Language Selection</a>
-            <a id="play-button" href="#" class="play-button" onclick="playAudio()">Play</a>
         </div>
     </div>
 
@@ -132,18 +139,16 @@
         const titlesUrl = "https://schlossmuseumwf.github.io/audio/titles.json";
         let titles = {};
 
-        // Load JSON with titles
         fetch(titlesUrl)
             .then(response => response.json())
             .then(data => {
                 titles = data;
-                console.log("JSON Data Loaded:", titles); // Debug output
+                console.log("JSON Data Loaded:", titles);
             })
             .catch(error => {
                 console.error("Error loading titles.json:", error);
             });
 
-        // Toggle header visibility
         function toggleHeader(show) {
             const instruction = document.getElementById('instruction');
             const audioTitle = document.getElementById('audio-title');
@@ -156,49 +161,39 @@
             }
         }
 
-        // Add a number
         function addNumber(num) {
             if (currentNumber.length < 5) {
                 currentNumber += num;
                 document.getElementById('display').textContent = currentNumber || '0';
-                toggleHeader(false); // Hide header
+                toggleHeader(false);
             }
         }
 
-        // Remove last digit
         function removeLast() {
             currentNumber = currentNumber.slice(0, -1);
             document.getElementById('display').textContent = currentNumber || '0';
             if (!currentNumber) {
-                toggleHeader(true); // Show header
+                toggleHeader(true);
             }
         }
 
-        // Play audio
         function playAudio() {
             if (currentNumber) {
-                const language = 'en'; // English language
+                const language = 'en';
                 const audioUrl = `https://schlossmuseumwf.github.io/audio/mp3/${language}/${currentNumber}.mp3`;
                 const audioPlayer = document.getElementById('audio-player');
                 const audioTitle = document.getElementById('audio-title');
 
-                // Get the title for the current number
                 const numericNumber = parseInt(currentNumber, 10);
-                console.log("Current number:", numericNumber); // Debugging
                 const title = titles[language] && titles[language][numericNumber];
-                console.log("Retrieved title:", title); // Debugging
 
                 if (title) {
-                    console.log("Before update:", audioTitle.textContent); // Debugging
                     audioTitle.textContent = title;
-                    audioTitle.style.display = 'block'; // Ensure the title is visible
-                    console.log("After update:", audioTitle.textContent); // Debugging
+                    audioTitle.style.display = 'block';
                 } else {
-                    console.error(`Title for number ${currentNumber} in language ${language} not found in titles.json`);
                     audioTitle.textContent = `Audio Number: ${currentNumber}`;
                 }
 
-                // Play the audio file
                 audioPlayer.src = audioUrl;
                 audioPlayer.style.display = 'block';
                 audioPlayer.play();
